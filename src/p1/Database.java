@@ -1,4 +1,5 @@
 package p1;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -10,6 +11,11 @@ public class Database {
     }
 
     public void insertar(Nodo n){
-        Files.write(file,n.toString().getBytes());
+        try {
+            Files.write(file,n.toString().getBytes());
+        } catch (IOException x){
+            System.err.println(x);
+        }
+
     }
 }
