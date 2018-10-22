@@ -11,7 +11,8 @@ public class Consumidor extends Nodo {
 
     @Override
     public String toString() {
-        return this.attr.get("id") + this.attr.get("rut") + this.attr.get("ptsAc");
+        return this.attr.get("id") + ", " + this.attr.get("rut") + ", " +
+                this.attr.get("ptsAc");
     }
 
 }
