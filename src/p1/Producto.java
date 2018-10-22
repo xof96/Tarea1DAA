@@ -12,6 +12,7 @@ public class Producto extends Nodo {
 
     @Override
     public String toString() {
-        return this.attr.get("id") + this.attr.get("precio") + this.attr.get("ptsNec") + this.attr.get("ptsRec");
+        return this.attr.get("id") + ", " + this.attr.get("precio") + ", " +
+                this.attr.get("ptsNec") + ", " + this.attr.get("ptsRec");
     }
 }
