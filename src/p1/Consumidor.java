@@ -1,7 +1,5 @@
 package p1;
 
-import java.util.Hashtable;
-
 public class Consumidor extends Nodo {
 
     public Consumidor (int id, String rut, int ptsAc) {
@@ -9,7 +7,6 @@ public class Consumidor extends Nodo {
         this.attr.put("id", String.valueOf(id));
         this.attr.put("rut", rut);
         this.attr.put("ptsAc", String.valueOf(ptsAc));
-
     }
 
 
