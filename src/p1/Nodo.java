@@ -6,7 +6,7 @@ public abstract class Nodo {
 
     protected Hashtable<String, String> attr;
 
-    public Nodo () {
+    public Nodo() {
         this.attr = new Hashtable<String, String>();
     }
 

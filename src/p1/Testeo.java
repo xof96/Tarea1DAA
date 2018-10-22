@@ -6,10 +6,10 @@ import java.nio.file.Paths;
 
 public class Testeo {
     public static void main(String[] args) {
-        Producto prod=new Producto(1,100, 200, 300);
-        Consumidor c=new Consumidor(23,"19514213-0",0);
-        Path p= Paths.get("C:\\Users\\javie\\Desktop\\dict.txt");
-        Database d=new Database(p);
+        Producto prod = new Producto(1, 100, 200, 300);
+        Consumidor c = new Consumidor(23, "19514213-0", 0);
+        Path p = Paths.get("C:\\Users\\javie\\Desktop\\dict.txt");
+        Database d = new Database(p);
         d.insertar(c);
         d.insertar(prod);
         d.insertar(c);
