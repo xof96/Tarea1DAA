@@ -20,6 +20,9 @@ class Database {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    void ordenar(String attr) {
+        
     }
 }
