@@ -34,11 +34,10 @@ class Database {
         System.out.println(size);*/
 
         Nodo[] l = new Nodo[1000];
-
+        int i=0;
         Charset charset = Charset.forName("US-ASCII");
         try (BufferedReader reader = Files.newBufferedReader(this.file, charset)) {
             String line;
-            int i = 0;
             while (i < 1000 && (line = reader.readLine()) != null) {
                 List<String> nodostr = Arrays.asList(line.split(","));
                 int id = Integer.parseInt(nodostr.get(0));
@@ -52,8 +51,10 @@ class Database {
         } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
         }
-        mergeSort(l, l.length, attr);
-        System.out.println(l[0].attr.get(attr));
+        mergeSort(l, i, attr);
+        for(int w=0;w<i;w++){
+            System.out.println(l[w]);
+        }
 
     }
 
@@ -68,6 +69,16 @@ class Database {
         System.arraycopy(a, 0, l, 0, l.length);
         System.arraycopy(a, mid, r, 0, r.length);
 
+        /*System.out.println("Left:");
+        System.out.println(l.length);
+        for(int p=0;p<l.length;p++){
+            System.out.println(l[p]);
+        }
+        System.out.println("Right:");
+        for(int q=0;q<r.length;q++){
+            System.out.println(r[q]);
+        }*/
+
         mergeSort(l, mid, attr);
         mergeSort(r, n - mid, attr);
 
@@ -77,12 +88,12 @@ class Database {
     private static void merge(Nodo[] a, Nodo[] l, Nodo[] r, int left, int right, String attr) {
 
         int i = 0, j = 0, k = 0;
-        System.out.println(l[i].attr.get(attr));
-        System.out.println(r[j].attr.get(attr));
+        //System.out.println(l[i]);//.attr.get(attr));
+        //System.out.println(r[j]);//.attr.get(attr));
 
-/*        while (i < left && j < right) {
-            System.out.println(l[i].attr.get(attr));
-            System.out.println(r[j].attr.get(attr));
+        while (i < left && j < right) {
+            //System.out.println(l[i].attr.get(attr));
+            //System.out.println(r[j].attr.get(attr));
             if (l[i].attr.get(attr).compareTo(r[j].attr.get(attr)) < 0) {
                 a[k++] = l[i++];
             } else {
@@ -94,6 +105,6 @@ class Database {
         }
         while (j < right) {
             a[k++] = r[j++];
-        }*/
+        }
     }
 }
