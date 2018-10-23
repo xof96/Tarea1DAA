@@ -4,10 +4,10 @@ import java.util.Hashtable;
 
 public abstract class Nodo {
 
-    protected Hashtable<String, String> attr;
+    protected Hashtable<String, Integer> attr;
 
     public Nodo() {
-        this.attr = new Hashtable<String, String>();
+        this.attr = new Hashtable<String, Integer>();
     }
 
 }

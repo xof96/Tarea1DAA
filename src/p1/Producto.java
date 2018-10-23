@@ -2,7 +2,7 @@ package p1;
 
 public class Producto extends Nodo {
 
-    public Producto(String id, String precio, String ptsNec, String ptsRec) {
+    public Producto(int id, int precio, int ptsNec, int ptsRec) {
         super();
         this.attr.put("id", id);
         this.attr.put("precio", precio);

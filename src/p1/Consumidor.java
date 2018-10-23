@@ -2,7 +2,7 @@ package p1;
 
 public class Consumidor extends Nodo {
 
-    public Consumidor(String id, String rut, String ptsAc) {
+    public Consumidor(int id, int rut, int ptsAc) {
         super();
         this.attr.put("id", id);
         this.attr.put("rut", rut);
