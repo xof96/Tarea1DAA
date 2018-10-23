@@ -29,21 +29,22 @@ class Database {
     }
 
     void ordenar(String attr) {
-         /*Servira para separar en caso si el archivo es grande o no
-         long size=file.toFile().length();
-         System.out.println(size);*/
-         List<Nodo> l=new ArrayList<Nodo>();
+        /*Servira para separar en caso si el archivo es grande o no
+        long size=file.toFile().length();
+        System.out.println(size);*/
+        List<Nodo> l = new ArrayList<>();
 
         Charset charset = Charset.forName("US-ASCII");
-        try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
-            String line = null;
-            while ((line = reader.readLine()) != null && l.size()<=1000) {
+        try (BufferedReader reader = Files.newBufferedReader(this.file, charset)) {
+            String line;
+            while ((line = reader.readLine()) != null && l.size() <= 1000) {
+                line = line.replaceAll("\\s+", "");
                 List<String> nodostr = Arrays.asList(line.split(","));
-                int id=Integer.parseInt(nodostr.get(0).replaceAll("\\s+",""));
-                int precio=Integer.parseInt(nodostr.get(1).replaceAll("\\s+",""));
-                int ptsNec=Integer.parseInt(nodostr.get(2).replaceAll("\\s+",""));
-                int ptsRec=Integer.parseInt(nodostr.get(3).replaceAll("\\s+",""));
-                Producto p=new Producto(id,precio,ptsNec,ptsRec);
+                int id = Integer.parseInt(nodostr.get(0));
+                int precio = Integer.parseInt(nodostr.get(1));
+                int ptsNec = Integer.parseInt(nodostr.get(2));
+                int ptsRec = Integer.parseInt(nodostr.get(3));
+                Producto p = new Producto(id, precio, ptsNec, ptsRec);
                 l.add(p);
             }
         } catch (IOException x) {
