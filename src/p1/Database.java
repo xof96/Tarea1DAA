@@ -32,18 +32,19 @@ class Database {
         /*Servira para separar en caso si el archivo es grande o no
         long size=file.toFile().length();
         System.out.println(size);*/
+
         Nodo[] l = new Nodo[1000];
 
         Charset charset = Charset.forName("US-ASCII");
         try (BufferedReader reader = Files.newBufferedReader(this.file, charset)) {
             String line;
             int i = 0;
-            while ((line = reader.readLine()) != null && i != 1000) {
+            while (i < 1000 && (line = reader.readLine()) != null) {
                 List<String> nodostr = Arrays.asList(line.split(","));
-                String id = nodostr.get(0);
-                String precio = nodostr.get(1);
-                String ptsNec = nodostr.get(2);
-                String ptsRec = nodostr.get(3);
+                int id = Integer.parseInt(nodostr.get(0));
+                int precio = Integer.parseInt(nodostr.get(1));
+                int ptsNec = Integer.parseInt(nodostr.get(2));
+                int ptsRec = Integer.parseInt(nodostr.get(3));
                 Producto p = new Producto(id, precio, ptsNec, ptsRec);
                 l[i] = p;
                 i++;
@@ -56,7 +57,7 @@ class Database {
 
     }
 
-    public static void mergeSort(Nodo[] a, int n, String attr) {
+    private static void mergeSort(Nodo[] a, int n, String attr) {
         if (n < 2) {
             return;
         }
@@ -64,19 +65,16 @@ class Database {
         Nodo[] l = new Nodo[mid];
         Nodo[] r = new Nodo[n - mid];
 
-        for (int i = 0; i < mid; i++) {
-            l[i] = a[i];
-        }
-        for (int i = mid; i < n; i++) {
-            r[i - mid] = a[i];
-        }
+        System.arraycopy(a, 0, l, 0, l.length);
+        System.arraycopy(a, mid, r, 0, r.length);
+
         mergeSort(l, mid, attr);
         mergeSort(r, n - mid, attr);
 
         merge(a, l, r, mid, n - mid, attr);
     }
 
-    public static void merge(Nodo[] a, Nodo[] l, Nodo[] r, int left, int right, String attr) {
+    private static void merge(Nodo[] a, Nodo[] l, Nodo[] r, int left, int right, String attr) {
 
         int i = 0, j = 0, k = 0;
         System.out.println(l[i].attr.get(attr));
