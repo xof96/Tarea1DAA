@@ -12,6 +12,7 @@ public class Producto extends Nodo {
 
     @Override
     public String toString() {
+        //hay que tratar de quitarle el espacio despues de la coma
         return this.attr.get("id") + ", " + this.attr.get("precio") + ", " +
                 this.attr.get("ptsNec") + ", " + this.attr.get("ptsRec");
     }

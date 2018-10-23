@@ -11,6 +11,7 @@ public class Consumidor extends Nodo {
 
     @Override
     public String toString() {
+        //hay que tratar de quitarle el espacio despues de las comas
         return this.attr.get("id") + ", " + this.attr.get("rut") + ", " +
                 this.attr.get("ptsAc");
     }
