@@ -10,4 +10,8 @@ public abstract class Nodo {
         this.attr = new Hashtable<String, Integer>();
     }
 
+    public Hashtable<String, Integer> getAttr() {
+        return this.attr;
+    }
+
 }

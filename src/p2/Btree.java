@@ -9,17 +9,52 @@ public class Btree {
 
     private int b;
     private Nodo key;
-    private Btree[] children;
+    private String orderCriteria;
+    private List<Btree> children;
 
-    Btree(int b) {
+    Btree(int b, String criteria) {
         this.b = b;
-        children = new Btree[b];
+        this.orderCriteria = criteria;
+        this.children = new ArrayList<>();
     }
 
-    List<Nodo> search(String attr) {
-        List<Nodo> nlist = new ArrayList<>();
+    public int getB() {
+        return this.b;
+    }
 
-        return n;
+    public Nodo getKey() {
+        return this.key;
+    }
+
+    public String getOrderCriteria() {
+        return this.orderCriteria;
+    }
+
+    public List<Btree> getChildren() {
+        return this.children;
+    }
+
+
+    public void insert(Nodo n) {
+        if (this.children == null) {
+
+        }
+    }
+
+    List<Nodo> searchEqual(String key, int value) {
+        List<Nodo> nlist = new ArrayList<>();
+        if (this.children == null) {
+            for (int i = 0; i < children.size(); i++) {
+                Nodo ni = children.get(i).getKey();
+                if (ni.getAttr().get(key) == value) {
+                    nlist.add(ni);
+                }
+            }
+        }
+        else {
+            return nlist;
+        }
+        return nlist;
     }
 
 }
