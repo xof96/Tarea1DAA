@@ -11,9 +11,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 class Database {
     private Path file;
+    private static int MEMOSIZE = 5;
 
     Database(String path) {
 
@@ -29,16 +31,27 @@ class Database {
     }
 
     void ordenar(String attr) {
-        /*Servira para separar en caso si el archivo es grande o no
-        long size=file.toFile().length();
-        System.out.println(size);*/
-
-        Nodo[] l = new Nodo[1000];
-        int i=0;
+        Nodo[] l = new Nodo[MEMOSIZE];
         Charset charset = Charset.forName("US-ASCII");
+        Path[] temps = new Path[1000];
+        int tempsn = 0;
         try (BufferedReader reader = Files.newBufferedReader(this.file, charset)) {
             String line;
-            while (i < 1000 && (line = reader.readLine()) != null) {
+            int i = 0;
+            while ((line = reader.readLine()) != null) {
+                if (i == MEMOSIZE) {
+                    mergeSort(l, i, attr);
+                    temps[tempsn] = Paths.get("./temp" + String.valueOf(tempsn) + ".txt");
+                    for (int w = 0; w < i; w++) {
+                        try {
+                            Files.write(temps[tempsn], (l[w].toString() + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    i = 0;
+                    tempsn++;
+                }
                 List<String> nodostr = Arrays.asList(line.split(","));
                 int id = Integer.parseInt(nodostr.get(0));
                 int precio = Integer.parseInt(nodostr.get(1));
@@ -48,14 +61,70 @@ class Database {
                 l[i] = p;
                 i++;
             }
+            mergeSort(l, i, attr);
+            temps[tempsn] = Paths.get("./temp" + String.valueOf(tempsn) + ".txt");
+            for (int w = 0; w < i; w++) {
+                try {
+                    Files.write(temps[tempsn], (l[w].toString() + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            tempsn++;
+
+            Nodo[] nodosmin = new Nodo[tempsn];
+            BufferedReader[] readers = new BufferedReader[tempsn];
+            for (int k = 0; k < tempsn; k++) {
+                readers[k] = Files.newBufferedReader(temps[k], charset);
+            }
+            for (int k = 0; k < tempsn; k++) {
+                String rawnode = readers[k].readLine();
+                List<String> nodostr = Arrays.asList(rawnode.split(","));
+                int id = Integer.parseInt(nodostr.get(0));
+                int precio = Integer.parseInt(nodostr.get(1));
+                int ptsNec = Integer.parseInt(nodostr.get(2));
+                int ptsRec = Integer.parseInt(nodostr.get(3));
+                Producto p = new Producto(id, precio, ptsNec, ptsRec);
+                nodosmin[k] = p;
+            }
+            Nodo min = nodosmin[0];
+            int index = 0;
+            int[] lecturas = new int[tempsn];
+
+            //aqui hacer el while
+            for (int s = 0; s < tempsn; s++) {
+                if(s!=tempsn-1){
+                    lecturas[s]=MEMOSIZE-1;
+                }
+                else{
+                    lecturas[s]=i-1;
+                }
+            }
+
+            for (int s = 0; s < tempsn; s++) {
+                if(lecturas[s]>=0) {
+                    if (nodosmin[s].attr.get(attr) <= min.attr.get(attr)) {
+                        min = nodosmin[s];
+                        index = s;
+                    }
+                }
+            }
+            lecturas[index]--;
+            if(lecturas[index]>0) {
+                String rawnode = readers[index].readLine();
+                List<String> nodostr = Arrays.asList(rawnode.split(","));
+                int id = Integer.parseInt(nodostr.get(0));
+                int precio = Integer.parseInt(nodostr.get(1));
+                int ptsNec = Integer.parseInt(nodostr.get(2));
+                int ptsRec = Integer.parseInt(nodostr.get(3));
+                Producto p = new Producto(id, precio, ptsNec, ptsRec);
+                nodosmin[index] = p;
+            }
+            Files.write(Paths.get("./final.txt"), (min.toString() + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
         } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
         }
-        mergeSort(l, i, attr);
-        for(int w=0;w<i;w++){
-            System.out.println(l[w]);
-        }
-
     }
 
     private static void mergeSort(Nodo[] a, int n, String attr) {
