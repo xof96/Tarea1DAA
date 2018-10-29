@@ -84,7 +84,7 @@ public class BInner implements BNode {
             lInner.setChildren(leftChildren);
             lInner.setCurrC(middleN);
             Nodo med = this.keys.get(middleN);
-            for (int i = 0; i < middleN; i++) {
+            for (int i = 0; i < middleN; i++) { // Añadí otro hijo para tenerlo en cuenta
                 this.keys.remove(0);
                 this.currK--;
                 this.children.remove(0);
