@@ -15,7 +15,8 @@ import java.util.Scanner;
 
 class Database {
     private Path file;
-    private static int MEMOSIZE = 5;
+    private static int MEMOSIZE = 2;
+    private static int MAX_INT = 2147483647;
 
     Database(String path) {
 
@@ -76,8 +77,6 @@ class Database {
             BufferedReader[] readers = new BufferedReader[tempsn];
             for (int k = 0; k < tempsn; k++) {
                 readers[k] = Files.newBufferedReader(temps[k], charset);
-            }
-            for (int k = 0; k < tempsn; k++) {
                 String rawnode = readers[k].readLine();
                 List<String> nodostr = Arrays.asList(rawnode.split(","));
                 int id = Integer.parseInt(nodostr.get(0));
@@ -87,41 +86,42 @@ class Database {
                 Producto p = new Producto(id, precio, ptsNec, ptsRec);
                 nodosmin[k] = p;
             }
+            Nodo max= new Producto(MAX_INT,MAX_INT,MAX_INT,MAX_INT);
             Nodo min = nodosmin[0];
             int index = 0;
             int[] lecturas = new int[tempsn];
+            int nlecturas=MEMOSIZE*(tempsn-1)+i-tempsn+2;
 
-            //aqui hacer el while
             for (int s = 0; s < tempsn; s++) {
-                if(s!=tempsn-1){
+                if(s!=tempsn-1){//caso archivos temporales llenos
                     lecturas[s]=MEMOSIZE-1;
                 }
-                else{
+                else{//caso ultimo archivo temporal no lleno posiblemente
                     lecturas[s]=i-1;
                 }
             }
-
-            for (int s = 0; s < tempsn; s++) {
-                if(lecturas[s]>=0) {
+            while(nlecturas>0) {
+                for (int s = 0; s < tempsn; s++) {
                     if (nodosmin[s].attr.get(attr) <= min.attr.get(attr)) {
                         min = nodosmin[s];
                         index = s;
                     }
                 }
+                lecturas[index]--;
+                nlecturas--;
+                if (lecturas[index] > 0) {
+                    String rawnode = readers[index].readLine();
+                    List<String> nodostr = Arrays.asList(rawnode.split(","));
+                    int id = Integer.parseInt(nodostr.get(0));
+                    int precio = Integer.parseInt(nodostr.get(1));
+                    int ptsNec = Integer.parseInt(nodostr.get(2));
+                    int ptsRec = Integer.parseInt(nodostr.get(3));
+                    Producto p = new Producto(id, precio, ptsNec, ptsRec);
+                    nodosmin[index] = p;
+                }
+                Files.write(Paths.get("./final.txt"), (min.toString() + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                min=max;
             }
-            lecturas[index]--;
-            if(lecturas[index]>0) {
-                String rawnode = readers[index].readLine();
-                List<String> nodostr = Arrays.asList(rawnode.split(","));
-                int id = Integer.parseInt(nodostr.get(0));
-                int precio = Integer.parseInt(nodostr.get(1));
-                int ptsNec = Integer.parseInt(nodostr.get(2));
-                int ptsRec = Integer.parseInt(nodostr.get(3));
-                Producto p = new Producto(id, precio, ptsNec, ptsRec);
-                nodosmin[index] = p;
-            }
-            Files.write(Paths.get("./final.txt"), (min.toString() + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-
         } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
         }
