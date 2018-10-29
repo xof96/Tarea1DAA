@@ -112,7 +112,7 @@ public class BInner implements BNode {
     /*----------------------Getters----------------------*/
 
     public BInner getFather() {
-        return null;
+        return this.father;
     }
 
     public List<Nodo> getKeys() {
