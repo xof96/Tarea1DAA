@@ -102,9 +102,11 @@ class Database {
             }
             while(nlecturas>0) {
                 for (int s = 0; s < tempsn; s++) {
-                    if (nodosmin[s].attr.get(attr) <= min.attr.get(attr)) {
-                        min = nodosmin[s];
-                        index = s;
+                    if (lecturas[s]>=0) {
+                        if (nodosmin[s].attr.get(attr) <= min.attr.get(attr)) {
+                            min = nodosmin[s];
+                            index = s;
+                        }
                     }
                 }
                 lecturas[index]--;
