@@ -44,6 +44,19 @@ public class BInner implements BNode {
         return t;
     }
 
+    public int indexToInsert(Nodo n) {
+        int value = n.getAttr().get(this.orderCriteria);
+        for (int i = 0; i <= this.currK; i++) {
+            if (i < this.currK) {
+                if (value <= this.keys.get(i).getAttr().get(this.orderCriteria)) {
+                    return i;
+                }
+            } else {
+                return -1;
+            }
+        }
+    }
+
     public int insertBcsOfSplitting(BTree t, Nodo n) {
         int value = n.getAttr().get(this.orderCriteria);
         int index = -1;
@@ -64,12 +77,20 @@ public class BInner implements BNode {
         if (this.currK > this.kLimit) {
             int middleN = this.currK / 2;
             List<Nodo> leftKeys = this.keys.subList(0, middleN);
-            BLeaf lLeaf = new BLeaf(this.kLimit, this.orderCriteria);
-            lLeaf.setKeys(leftKeys);
+            List<BNode> leftChildren = this.children.subList(0, middleN);
+            BInner lInner = new BInner(this.kLimit, this.orderCriteria);
+            lInner.setKeys(leftKeys);
+            lInner.setCurrK(middleN);
+            lInner.setChildren(leftChildren);
+            lInner.setCurrC(middleN);
             Nodo med = this.keys.get(middleN);
-            for (int i = 0; i < middleN; i++)
+            for (int i = 0; i < middleN; i++) {
                 this.keys.remove(0);
-            this.split(t, med, lLeaf, this);
+                this.currK--;
+                this.children.remove(0);
+                this.currC--;
+            }
+            this.split(t, med, lInner, this);
         }
         return index;
     }

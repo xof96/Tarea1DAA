@@ -2,8 +2,6 @@ package p2;
 
 import p1.Nodo;
 
-import java.util.List;
-
 public class BTree {
 
     private BNode root;
@@ -22,12 +20,5 @@ public class BTree {
 
     void insert(Nodo n) {
         this.root.insert(this, n);
-    }
-
-    public int insertBcsOfSplitting(Nodo n) {
-        return 0;
-    }
-
-    public void insertChildren(List<Nodo> l, int index) {
     }
 }

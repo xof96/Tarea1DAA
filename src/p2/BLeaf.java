@@ -39,9 +39,12 @@ public class BLeaf implements BNode {
             List<Nodo> leftKeys = this.keys.subList(0, middleN);
             BLeaf lLeaf = new BLeaf(this.kLimit, this.orderCriteria);
             lLeaf.setKeys(leftKeys);
+            lLeaf.setCurrK(middleN);
             Nodo med = this.keys.get(middleN);
-            for (int i = 0; i < middleN; i++)
+            for (int i = 0; i <= middleN; i++) {
                 this.keys.remove(0);
+                this.currK--;
+            }
             this.split(t, med, lLeaf, this);
         }
         return t;
@@ -53,8 +56,9 @@ public class BLeaf implements BNode {
             this.setFather(new BInner(this.kLimit, this.orderCriteria));
             this.father.insertChildren(r, 0);
         }
-        int index = this.father.insertBcsOfSplitting(t, n);
+        int index = this.father.indexToInsert(n);
         this.father.insertChildren(l, index);
+        this.father.insertBcsOfSplitting(t, n);
         t.setRoot(this.father);
     }
 
