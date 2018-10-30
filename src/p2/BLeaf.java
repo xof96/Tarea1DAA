@@ -58,7 +58,7 @@ public class BLeaf implements BNode {
         }
         int index = this.father.indexToInsert(n);
         this.father.insertChildren(l, index);
-        this.father.insertBcsOfSplitting(t, n);
+        this.father.insertBcsOfSplitting(t, n, index);
         t.setRoot(this.father);
     }
 

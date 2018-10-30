@@ -55,36 +55,29 @@ public class BInner implements BNode {
                 return -1;
             }
         }
+        return -1;
     }
 
-    public int insertBcsOfSplitting(BTree t, Nodo n) {
-        int value = n.getAttr().get(this.orderCriteria);
-        int index = -1;
-        for (int i = 0; i <= this.currK; i++) {
-            if (i < this.currK) {
-                if (value <= this.keys.get(i).getAttr().get(this.orderCriteria)) {
-                    this.keys.add(i, n);
-                    index = i;
-                    this.currK++;
-                    break;
-                }
-            } else {
-                this.keys.add(n);
-
-                this.currK++;
-            }
+    public void insertBcsOfSplitting(BTree t, Nodo n, int index) {
+        if (index != -1) {
+            this.keys.add(index, n);
+            this.currK++;
+        } else {
+            this.keys.add(n);
+            this.currK++;
         }
+
         if (this.currK > this.kLimit) {
             int middleN = this.currK / 2;
             List<Nodo> leftKeys = this.keys.subList(0, middleN);
-            List<BNode> leftChildren = this.children.subList(0, middleN);
+            List<BNode> leftChildren = this.children.subList(0, middleN + 1); // Se lleva al hijo derecho igual
             BInner lInner = new BInner(this.kLimit, this.orderCriteria);
             lInner.setKeys(leftKeys);
             lInner.setCurrK(middleN);
             lInner.setChildren(leftChildren);
-            lInner.setCurrC(middleN);
+            lInner.setCurrC(middleN + 1);
             Nodo med = this.keys.get(middleN);
-            for (int i = 0; i < middleN; i++) { // Añadí otro hijo para tenerlo en cuenta
+            for (int i = 0; i <= middleN; i++) { // Añadí otro hijo para tenerlo en cuenta
                 this.keys.remove(0);
                 this.currK--;
                 this.children.remove(0);
@@ -92,7 +85,6 @@ public class BInner implements BNode {
             }
             this.split(t, med, lInner, this);
         }
-        return index;
     }
 
     public void insertChildren(BNode c, int index) {
@@ -108,7 +100,14 @@ public class BInner implements BNode {
 
     @Override
     public void split(BTree t, Nodo n, BNode l, BNode r) {
-
+        if (this.father == null) {
+            this.setFather(new BInner(this.kLimit, this.orderCriteria));
+            this.father.insertChildren(r, 0);
+        }
+        int index = this.father.indexToInsert(n);
+        this.father.insertChildren(l, index);
+        this.father.insertBcsOfSplitting(t, n, index);
+        t.setRoot(this.father);
     }
 
     @Override
