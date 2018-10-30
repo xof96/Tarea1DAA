@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 class Database {
     private Path file;
-    private static int MEMOSIZE = 2;
+    private static int MEMOSIZE = 10;
     private static int MAX_INT = 2147483647;
 
     Database(String path) {
@@ -87,10 +87,10 @@ class Database {
                 nodosmin[k] = p;
             }
             Nodo max= new Producto(MAX_INT,MAX_INT,MAX_INT,MAX_INT);
-            Nodo min = nodosmin[0];
+            Nodo min = max;
             int index = 0;
             int[] lecturas = new int[tempsn];
-            int nlecturas=MEMOSIZE*(tempsn-1)+i-tempsn+2;
+            int nlecturas=MEMOSIZE*(tempsn-1)+i;//-tempsn;
 
             for (int s = 0; s < tempsn; s++) {
                 if(s!=tempsn-1){//caso archivos temporales llenos
@@ -111,7 +111,7 @@ class Database {
                 }
                 lecturas[index]--;
                 nlecturas--;
-                if (lecturas[index] > 0) {
+                if (lecturas[index] >= 0) {
                     String rawnode = readers[index].readLine();
                     List<String> nodostr = Arrays.asList(rawnode.split(","));
                     int id = Integer.parseInt(nodostr.get(0));
