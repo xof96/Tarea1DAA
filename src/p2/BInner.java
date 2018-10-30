@@ -106,10 +106,10 @@ public class BInner implements BNode {
             this.setFather(new BInner(this.kLimit, this.orderCriteria));
             this.father.insertChildren(r, 0);
         }
+        t.setRoot(this.father);
         int index = this.father.indexToInsert(n);
         this.father.insertChildren(l, index);
         this.father.insertBcsOfSplitting(t, n, index);
-        t.setRoot(this.father);
     }
 
     @Override
