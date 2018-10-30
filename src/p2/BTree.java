@@ -2,6 +2,8 @@ package p2;
 
 import p1.Nodo;
 
+import java.util.List;
+
 public class BTree {
 
     private BNode root;
@@ -20,5 +22,9 @@ public class BTree {
 
     void insert(Nodo n) {
         this.root.insert(this, n);
+    }
+
+    List<Nodo> search(int value) {
+        return this.root.search(value);
     }
 }

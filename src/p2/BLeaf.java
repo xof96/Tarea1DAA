@@ -20,7 +20,7 @@ public class BLeaf implements BNode {
     }
 
     @Override
-    public BTree insert(BTree t, Nodo n) {
+    public void insert(BTree t, Nodo n) {
         int value = n.getAttr().get(this.orderCriteria);
         for (int i = 0; i <= this.currK; i++) {
             if (i < this.currK) {
@@ -47,7 +47,6 @@ public class BLeaf implements BNode {
             }
             this.split(t, med, lLeaf, this);
         }
-        return t;
     }
 
     @Override
@@ -63,9 +62,8 @@ public class BLeaf implements BNode {
     }
 
     @Override
-    public List<Nodo> search(Nodo n) {
+    public List<Nodo> search(int value) {
         List<Nodo> res = new ArrayList<>();
-        int value = n.getAttr().get(this.orderCriteria);
         for (Nodo buf: this.keys) {
             int bufV = buf.getAttr().get(this.orderCriteria);
             if (value == bufV) {

@@ -10,11 +10,17 @@ public interface BNode {
      * Inserta el Nodo n en el BTree t según el criterio por el que esté
      * creado el BTree.
      */
-    BTree insert(BTree t, Nodo n);
+    void insert(BTree t, Nodo n);
 
+    /*
+     * Separa el nodo que llama este método en dos
+     */
     void split(BTree t, Nodo n, BNode l, BNode r);
 
-    List<Nodo> search(Nodo n);
+    /*
+     * Retorna una List<Nodo> con la los nodos que cumplen la condición.
+     */
+    List<Nodo> search(int value);
 
     void setFather(BInner bInner);
 }

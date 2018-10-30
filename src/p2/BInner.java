@@ -27,7 +27,7 @@ public class BInner implements BNode {
     }
 
     @Override
-    public BTree insert(BTree t, Nodo n) {
+    public void insert(BTree t, Nodo n) {
 
         int value = n.getAttr().get(this.orderCriteria);
         for (int i = 0; i <= this.currK; i++) {
@@ -40,8 +40,6 @@ public class BInner implements BNode {
                 this.children.get(i).insert(t, n);
             }
         }
-
-        return t;
     }
 
     public int indexToInsert(Nodo n) {
@@ -113,17 +111,16 @@ public class BInner implements BNode {
     }
 
     @Override
-    public List<Nodo> search(Nodo n) {
+    public List<Nodo> search(int value) {
         List<Nodo> res = new ArrayList<>();
-        int value = n.getAttr().get(this.orderCriteria);
         for (int i = 0; i < this.currK; i++) {
             int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
             if (value == bufV) {
-                res.addAll(this.children.get(i).search(n));
+                res.addAll(this.children.get(i).search(value));
                 res.add(this.keys.get(i));
             }
             if (value < bufV) {
-                res.addAll(this.children.get(i).search(n));
+                res.addAll(this.children.get(i).search(value));
                 break;
             }
         }
