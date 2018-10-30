@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 class Database {
     private Path file;
-    private static int MEMOSIZE = 10;
+    private static int MEMOSIZE = 100;
     private static int MAX_INT = 2147483647;
 
     Database(String path) {

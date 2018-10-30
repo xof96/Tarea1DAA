@@ -5,7 +5,7 @@ import java.util.Random;
 public class Testeo {
     public static void main(String[] args) {
 
-        Database d = new Database("./productochico.txt");
+        Database d = new Database("./producto.txt");
         Database d1 = new Database("./consumidor.txt");
         Random r = new Random();
         d.ordenar("ptsNec");
