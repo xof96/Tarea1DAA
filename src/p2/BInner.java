@@ -38,6 +38,7 @@ public class BInner implements BNode {
                 }
             } else {
                 this.children.get(i).insert(t, n);
+                break;
             }
         }
     }
@@ -125,6 +126,15 @@ public class BInner implements BNode {
             }
         }
         return res;
+    }
+
+    @Override
+    public void printBT() {
+        for (int i = 0; i <= this.currK; i++) {
+            System.out.println(this.keys.get(i));
+            if (i < this.currK)
+                this.children.get(i).printBT();
+        }
     }
 
 

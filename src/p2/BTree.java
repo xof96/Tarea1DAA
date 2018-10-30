@@ -8,23 +8,32 @@ public class BTree {
 
     private BNode root;
 
-    BTree(int b, String criteria) {
+    public BTree(int b, String criteria) {
         this.root = new BLeaf(b, criteria);
     }
+
+    public void insert(Nodo n) {
+        this.root.insert(this, n);
+    }
+
+    public List<Nodo> search(int value) {
+        return this.root.search(value);
+    }
+
+    public void printBT() {
+        this.root.printBT();
+    }
+
+    /*---------------Getter---------------*/
 
     public BNode getRoot() {
         return root;
     }
 
-    public void setRoot(BNode root) {
+    /*---------------Setter---------------*/
+
+    void setRoot(BNode root) {
         this.root = root;
     }
 
-    void insert(Nodo n) {
-        this.root.insert(this, n);
-    }
-
-    List<Nodo> search(int value) {
-        return this.root.search(value);
-    }
 }

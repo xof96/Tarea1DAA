@@ -22,5 +22,13 @@ public interface BNode {
      */
     List<Nodo> search(int value);
 
+    /*
+     * Prints the node and its children.
+     */
+    void printBT();
+
+    /*
+     * Setter for BNode's father.
+     */
     void setFather(BInner bInner);
 }

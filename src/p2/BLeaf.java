@@ -32,19 +32,21 @@ public class BLeaf implements BNode {
             } else {
                 this.keys.add(n);
                 this.currK++;
+                break;
             }
         }
         if (this.currK > this.kLimit) {
             int middleN = this.currK / 2;
-            List<Nodo> leftKeys = this.keys.subList(0, middleN);
+            List<Nodo> leftKeys = new ArrayList<>();
             BLeaf lLeaf = new BLeaf(this.kLimit, this.orderCriteria);
-            lLeaf.setKeys(leftKeys);
-            lLeaf.setCurrK(middleN);
-            Nodo med = this.keys.get(middleN);
-            for (int i = 0; i <= middleN; i++) {
-                this.keys.remove(0);
+            Nodo med = this.keys.remove(middleN);
+            this.currK--;
+            for (int i = 0; i < middleN; i++) {
+                leftKeys.add(this.keys.remove(0));
                 this.currK--;
             }
+            lLeaf.setKeys(leftKeys);
+            lLeaf.setCurrK(middleN);
             this.split(t, med, lLeaf, this);
         }
     }
@@ -73,6 +75,13 @@ public class BLeaf implements BNode {
             }
         }
         return res;
+    }
+
+    @Override
+    public void printBT() {
+        for (Nodo n: this.keys) {
+            System.out.println(n);
+        }
     }
 
     /*----------------------Getters----------------------*/
