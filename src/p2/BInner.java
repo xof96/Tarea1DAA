@@ -46,6 +46,8 @@ public class BInner implements BNode {
 
     public int indexToInsert(Nodo n) {
         int value = n.getAttr().get(this.orderCriteria);
+        if (this.currK == 0)
+            return 0;
         for (int i = 0; i <= this.currK; i++) {
             if (i < this.currK) {
                 if (value <= this.keys.get(i).getAttr().get(this.orderCriteria)) {
