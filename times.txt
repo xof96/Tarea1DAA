@@ -1,0 +1,6 @@
+Test 10 a la 1 with time: 73
+Test 10 a la 2 with time: 71
+Test 10 a la 3 with time: 471
+Test 10 a la 4 with time: 1778
+Test 10 a la 5 with time: 8727
+Test 10 a la 6 with time: 90500
