@@ -3,8 +3,15 @@ package p1;
 import java.util.Random;
 
 public class Testeo {
+    /*static {
+        long start = System.nanoTime();
+        ManualClassLoader.load();
+        long end = System.nanoTime();
+        System.out.println("Warm Up time : " + (end - start));
+    }*/
     public static void main(String[] args) {
         FileCreatorTest test1 = new FileCreatorTest();
+
         test1.createFilesProductor();
 
         /*Database d = new Database("./producto.txt");
