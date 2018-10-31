@@ -55,11 +55,11 @@ public class BLeaf implements BNode {
     public void split(BTree t, Nodo n, BNode l, BNode r) {
         if (this.father == null) {
             this.setFather(new BInner(this.kLimit, this.orderCriteria));
-            this.father.insertChildren(r, 0);
+            this.father.insertChild(r, 0);
+            t.setRoot(this.father);
         }
-        t.setRoot(this.father);
         int index = this.father.indexToInsert(n);
-        this.father.insertChildren(l, index);
+        this.father.insertChild(l, index);
         this.father.insertBcsOfSplitting(t, n, index);
     }
 
@@ -79,9 +79,16 @@ public class BLeaf implements BNode {
 
     @Override
     public void printBT() {
+//        System.out.println(this);
         for (Nodo n: this.keys) {
             System.out.println(n);
         }
+    }
+
+    public String toString() {
+        if (this.currK == 0)
+            return "BLeaf with no nodes";
+        return "BLeaf\n\tfrom: " + this.keys.get(0) + "\n\tto: " + this.keys.get(this.currK - 1);
     }
 
     /*----------------------Getters----------------------*/
@@ -112,7 +119,7 @@ public class BLeaf implements BNode {
         this.father = father;
     }
 
-    public void setKeys(List<Nodo> keys) {
+    private void setKeys(List<Nodo> keys) {
         this.keys = keys;
     }
 
@@ -124,7 +131,7 @@ public class BLeaf implements BNode {
         this.orderCriteria = orderCriteria;
     }
 
-    public void setCurrK(int currK) {
+    private void setCurrK(int currK) {
         this.currK = currK;
     }
 
