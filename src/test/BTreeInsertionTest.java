@@ -1,12 +1,11 @@
 package test;
 
-import p1.Nodo;
 import p1.Producto;
 import p2.BTree;
 
 import java.util.Random;
 
-public class BTreeTest {
+public class BTreeInsertionTest {
     public static void main(String[] args) {
 
         Random r = new Random();
