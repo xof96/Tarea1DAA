@@ -1,0 +1,4 @@
+time1: 912347ms
+time2: 897809ms
+time3: 786618ms
+time4: 798778ms
