@@ -1,7 +1,5 @@
 package p1;
 
-import java.util.Random;
-
 public class Testeo {
     /*static {
         long start = System.nanoTime();
@@ -10,9 +8,9 @@ public class Testeo {
         System.out.println("Warm Up time : " + (end - start));
     }*/
     public static void main(String[] args) {
-        FileCreatorTest test1 = new FileCreatorTest();
+//        FileCreatorTest test1 = new FileCreatorTest();
 
-        test1.createFilesProductor();
+//        test1.createFilesProducto();
 
         /*Database d = new Database("./producto.txt");
         Database d1 = new Database("./consumidor.txt");

@@ -19,7 +19,6 @@ class Database {
     private static int MAX_INT = 2147483647;
 
     Database(String path) {
-
         this.file = Paths.get(path);
     }
 

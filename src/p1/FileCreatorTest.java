@@ -1,5 +1,6 @@
 package p1;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,27 +8,28 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Random;
 
-class FileCreatorTest {
+public class FileCreatorTest {
 
-    void createFilesProductor() {
-        Path file = Paths.get("./times.txt");
+    public void createFilesProducto(String timePath, int pow, int nExp) {
+        Path file = Paths.get(timePath);
         Random r = new Random();
 
-        for (int i = 1; i <= 7; i++) {
+        for (int i = 1; i <= nExp; i++) {
             System.out.println(i);
-            double inputs = Math.pow(10, i);
-            Database dataInUse = new Database("./producto-" + Integer.toString(i) + ".txt");
+            int inputs = (int) Math.pow(10, pow);
+            String tmp = String.format("./producto-%d.txt", i);
+            Database dataInUse = new Database(tmp);
             long startTime = System.currentTimeMillis();
-            for (double j = 1; j <= inputs; j++) {
-                dataInUse.insertar(new Producto((int) j, r.nextInt(9991) + 10, r.nextInt(9001) + 1000, r.nextInt(991) + 10));
-
-            }
-
+            for (int j = 1; j <= inputs; j++)
+                dataInUse.insertar(new Producto(j, r.nextInt(9991) + 10, r.nextInt(9001) + 1000, r.nextInt(991) + 10));
             long stopTime = System.currentTimeMillis();
             long elapsedTime = stopTime - startTime;
-            String nameTest = "Test 10 a la " + Integer.toString(i) + " with time: \n";
+            String nameTest = String.format("time%d: ", i);
             try {
-                Files.write(file, (nameTest + Long.toString(elapsedTime) + "\n" + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                Files.write(file, String.format("%s%sms%n", nameTest, Long.toString(elapsedTime)).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                File f = new File(tmp);
+                if(f.delete())
+                    System.out.printf("%s borrado%n", tmp);
             } catch (IOException e) {
                 e.printStackTrace();
             }
