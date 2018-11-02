@@ -10,7 +10,7 @@ public class BTreeInsertionTest {
 
         Random r = new Random();
 
-        BTree b = new BTree(5, "ptsNec");
+        BTree b = new BTree(100, "ptsRec");
 
         for (int i = 1; i <= 1000; i++) {
             b.insert(new Producto(i, r.nextInt(9991) + 10, r.nextInt(9001) + 1000, r.nextInt(991) + 10));
