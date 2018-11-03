@@ -1,4 +1,7 @@
-package p1;
+package p1.test;
+
+import p1.nodo.Database;
+import p1.nodo.Producto;
 
 import java.io.File;
 import java.io.IOException;

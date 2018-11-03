@@ -1,15 +1,12 @@
-package test;
+package p2.test;
 
-import p1.Nodo;
-import p1.Producto;
-import p2.BNode;
-import p2.BTree;
+import p1.nodo.Nodo;
+import p2.btree.BNode;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
-import java.util.Random;
 
 public class BTreeSearchingTest {
 

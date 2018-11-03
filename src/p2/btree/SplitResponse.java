@@ -1,6 +1,6 @@
-package p2;
+package p2.btree;
 
-import p1.Nodo;
+import p1.nodo.Nodo;
 
 public class SplitResponse {
     private Nodo n;

@@ -1,13 +1,9 @@
-package test;
+package p2.test;
 
-import p1.Nodo;
-import p1.Producto;
-import p2.BNode;
-import p2.BTree;
+import p1.nodo.Producto;
+import p2.btree.BTree;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Random;
 
 public class BTreeInsertionTest {

@@ -1,6 +1,6 @@
-package p2;
+package p2.btree;
 
-import p1.Nodo;
+import p1.nodo.Nodo;
 
 import java.io.*;
 import java.util.List;

@@ -1,4 +1,4 @@
-package p1;
+package p1.nodo;
 
 import java.io.Serializable;
 import java.util.Hashtable;

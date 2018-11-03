@@ -1,28 +1,25 @@
-package p1;
+package p1.nodo;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
-class Database {
+public class Database {
     private Path file;
-    private static int MEMOSIZE = 100;
+    private static int MEMOSIZE = 100000;
     private static int MAX_INT = 2147483647;
 
-    Database(String path) {
+    public Database(String path) {
         this.file = Paths.get(path);
     }
 
-    void insertar(Nodo n) {
+    public void insertar(Nodo n) {
         try {
             Files.write(this.file, (n.toString() + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
@@ -85,23 +82,22 @@ class Database {
                 Producto p = new Producto(id, precio, ptsNec, ptsRec);
                 nodosmin[k] = p;
             }
-            Nodo max= new Producto(MAX_INT,MAX_INT,MAX_INT,MAX_INT);
+            Nodo max = new Producto(MAX_INT, MAX_INT, MAX_INT, MAX_INT);
             Nodo min = max;
             int index = 0;
             int[] lecturas = new int[tempsn];
-            int nlecturas=MEMOSIZE*(tempsn-1)+i;//-tempsn;
+            int nlecturas = MEMOSIZE * (tempsn - 1) + i;//-tempsn;
 
             for (int s = 0; s < tempsn; s++) {
-                if(s!=tempsn-1){//caso archivos temporales llenos
-                    lecturas[s]=MEMOSIZE-1;
-                }
-                else{//caso ultimo archivo temporal no lleno posiblemente
-                    lecturas[s]=i-1;
+                if (s != tempsn - 1) {//caso archivos temporales llenos
+                    lecturas[s] = MEMOSIZE - 1;
+                } else {//caso ultimo archivo temporal no lleno posiblemente
+                    lecturas[s] = i - 1;
                 }
             }
-            while(nlecturas>0) {
+            while (nlecturas > 0) {
                 for (int s = 0; s < tempsn; s++) {
-                    if (lecturas[s]>=0) {
+                    if (lecturas[s] >= 0) {
                         if (nodosmin[s].attr.get(attr) <= min.attr.get(attr)) {
                             min = nodosmin[s];
                             index = s;
@@ -121,7 +117,7 @@ class Database {
                     nodosmin[index] = p;
                 }
                 Files.write(Paths.get("./final.txt"), (min.toString() + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-                min=max;
+                min = max;
             }
         } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
