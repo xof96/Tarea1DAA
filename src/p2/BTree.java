@@ -23,10 +23,7 @@ public class BTree {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(this.rootPath));
         BNode root = (BNode) ois.readObject();
         ois.close();
-        splitResponse sr = root.insert(this, n);
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(this.rootPath));
-        oos.writeObject(root);
-        ois.close();
+        SplitResponse sr = root.insert(this, n);
 
         if (sr != null) {
             this.setRootPath(sr.getfPath());

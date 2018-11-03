@@ -30,11 +30,11 @@ public class BInner implements BNode, Serializable {
     }
 
     @Override
-    public splitResponse insert(BTree t, Nodo n) throws IOException, ClassNotFoundException {
+    public SplitResponse insert(BTree t, Nodo n) throws IOException, ClassNotFoundException {
 
         int value = n.getAttr().get(this.orderCriteria);
         ObjectInputStream ois = null;
-        splitResponse sr = null;
+        SplitResponse sr = null;
         for (int i = 0; i <= this.currK; i++) {
             if (i < this.currK) {
                 if (value <= this.keys.get(i).getAttr().get(this.orderCriteria)) {
@@ -64,9 +64,9 @@ public class BInner implements BNode, Serializable {
             return this.insertBcsOfSplitting(sr.getN(), index);
 
         }
-        if (ois != null) {
-            ois.close();
-        }
+
+        if (ois != null) ois.close();
+
         return null;
     }
 
@@ -82,7 +82,7 @@ public class BInner implements BNode, Serializable {
         return this.currK;
     }
 
-    splitResponse insertBcsOfSplitting(Nodo n, int index) throws IOException {
+    SplitResponse insertBcsOfSplitting(Nodo n, int index) throws IOException {
         if (index < currK) {
             this.keys.add(index, n);
             this.currK++;
@@ -110,11 +110,16 @@ public class BInner implements BNode, Serializable {
             lInner.setCurrK(middleN);
             return this.split(med, lInner);
         }
+
+        ObjectOutputStream myos = new ObjectOutputStream(new FileOutputStream(this.path));
+        myos.writeObject(this);
+        myos.close();
+
         return null;
     }
 
     @Override
-    public splitResponse split(Nodo n, BNode l) throws IOException {
+    public SplitResponse split(Nodo n, BNode l) throws IOException {
         String fPath = String.format("%sf", this.path);
 
         File f = new File(this.path);
@@ -131,7 +136,7 @@ public class BInner implements BNode, Serializable {
         los.writeObject(l);
         los.close();
 
-        return new splitResponse(n, l.getPath(), this.path, fPath);
+        return new SplitResponse(n, l.getPath(), this.path, fPath);
     }
 
     void insertChildPath(String cPath, int index) {

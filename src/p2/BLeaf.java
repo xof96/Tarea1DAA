@@ -22,7 +22,7 @@ public class BLeaf implements BNode, Serializable {
     }
 
     @Override
-    public splitResponse insert(BTree t, Nodo n) throws IOException {
+    public SplitResponse insert(BTree t, Nodo n) throws IOException {
         int value = n.getAttr().get(this.orderCriteria);
         for (int i = 0; i <= this.currK; i++) {
             if (i < this.currK) {
@@ -37,6 +37,7 @@ public class BLeaf implements BNode, Serializable {
                 break;
             }
         }
+
         if (this.currK > this.kLimit) {
             int middleN = this.currK / 2;
             List<Nodo> leftKeys = new ArrayList<>();
@@ -52,11 +53,16 @@ public class BLeaf implements BNode, Serializable {
             lLeaf.setCurrK(middleN);
             return this.split(med, lLeaf);
         }
+
+        ObjectOutputStream myos = new ObjectOutputStream(new FileOutputStream(this.path));
+        myos.writeObject(this);
+        myos.close();
+
         return null;
     }
 
     @Override
-    public splitResponse split(Nodo n, BNode l) throws IOException {
+    public SplitResponse split(Nodo n, BNode l) throws IOException {
         String fPath = String.format("%sf", this.path);
 
         File f = new File(this.path);
@@ -72,7 +78,7 @@ public class BLeaf implements BNode, Serializable {
         ObjectOutputStream los = new ObjectOutputStream(new FileOutputStream(l.getPath()));
         los.writeObject(l);
         los.close();
-        return new splitResponse(n, l.getPath(), this.path, fPath);
+        return new SplitResponse(n, l.getPath(), this.path, fPath);
     }
 
     @Override

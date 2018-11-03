@@ -2,13 +2,13 @@ package p2;
 
 import p1.Nodo;
 
-public class splitResponse {
+public class SplitResponse {
     private Nodo n;
     private String lPath;
     private String rPath;
     private String fPath;
 
-    splitResponse(Nodo n, String lPath, String rPath, String fPath) {
+    SplitResponse(Nodo n, String lPath, String rPath, String fPath) {
         this.n = n;
         this.lPath = lPath;
         this.rPath = rPath;
