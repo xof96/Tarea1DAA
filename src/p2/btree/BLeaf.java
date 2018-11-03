@@ -96,6 +96,11 @@ public class BLeaf implements BNode, Serializable {
     }
 
     @Override
+    public List<Nodo> searchLesser(int ini, int fin, int incI, int incF) throws IOException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
     public void printBT() {
         for (Nodo n: this.keys) {
             System.out.println(n);

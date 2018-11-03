@@ -3,6 +3,7 @@ package p2.btree;
 import p1.nodo.Nodo;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 public interface BNode {
@@ -24,6 +25,11 @@ public interface BNode {
     List<Nodo> search(int value) throws IOException, ClassNotFoundException;
 
     /*
+     * Retorna una List<Nodo> con la los nodos que cumplen la condición.
+     */
+    List<Nodo> searchLesser(int ini, int fin, int incI, int incF) throws IOException, ClassNotFoundException;
+
+    /*
      * Prints the node and its children.
      */
     void printBT() throws IOException, ClassNotFoundException;
@@ -32,4 +38,7 @@ public interface BNode {
      * Returns the path of the node.
      */
     String getPath();
+
+    List<Nodo> searchLesser(int value, int incF) throws IOException, ClassNotFoundException;
+    List<Nodo> searchBigger(int value, int incF);
 }
