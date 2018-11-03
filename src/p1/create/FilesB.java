@@ -1,11 +1,11 @@
 package p1.create;
 
-import p1.test.FileCreatorTest;
+import p1.test.FileTester;
 
 public class FilesB {
     public static void main(String[] args) {
         String tPath = "times2.txt";
-        FileCreatorTest test = new FileCreatorTest();
-        test.createFilesProducto(tPath, 2, 8);
+        FileTester test = new FileTester();
+        test.insertionTestProducto(tPath, 2, 8);
     }
 }
