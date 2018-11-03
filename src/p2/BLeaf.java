@@ -2,17 +2,19 @@ package p2;
 
 import p1.Nodo;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BLeaf implements BNode {
-    private BInner father;
+public class BLeaf implements BNode, Serializable {
+    private String path;
     private List<Nodo> keys;
     private int kLimit;
     private String orderCriteria;
     private int currK;
 
-    BLeaf(int b, String criteria) {
+    BLeaf(int b, String criteria, String path) {
+        this.path = path;
         this.keys = new ArrayList<>();
         this.kLimit = b;
         this.orderCriteria = criteria;
@@ -20,7 +22,7 @@ public class BLeaf implements BNode {
     }
 
     @Override
-    public void insert(BTree t, Nodo n) {
+    public splitResponse insert(BTree t, Nodo n) throws IOException {
         int value = n.getAttr().get(this.orderCriteria);
         for (int i = 0; i <= this.currK; i++) {
             if (i < this.currK) {
@@ -38,7 +40,8 @@ public class BLeaf implements BNode {
         if (this.currK > this.kLimit) {
             int middleN = this.currK / 2;
             List<Nodo> leftKeys = new ArrayList<>();
-            BLeaf lLeaf = new BLeaf(this.kLimit, this.orderCriteria);
+            String lPath = String.format("%sl", this.path);
+            BLeaf lLeaf = new BLeaf(this.kLimit, this.orderCriteria, lPath);
             Nodo med = this.keys.remove(middleN);
             this.currK--;
             for (int i = 0; i < middleN; i++) {
@@ -47,20 +50,29 @@ public class BLeaf implements BNode {
             }
             lLeaf.setKeys(leftKeys);
             lLeaf.setCurrK(middleN);
-            this.split(t, med, lLeaf, this);
+            return this.split(med, lLeaf);
         }
+        return null;
     }
 
     @Override
-    public void split(BTree t, Nodo n, BNode l, BNode r) {
-        if (this.father == null) {
-            this.setFather(new BInner(this.kLimit, this.orderCriteria));
-            this.father.insertChild(r, 0);
-            t.setRoot(this.father);
-        }
-        int index = this.father.indexToInsert(n);
-        this.father.insertChild(l, index);
-        this.father.insertBcsOfSplitting(t, n, index);
+    public splitResponse split(Nodo n, BNode l) throws IOException {
+        String fPath = String.format("%sf", this.path);
+
+        File f = new File(this.path);
+        if(f.delete())
+            System.out.printf("%s borrado%n", this.path);
+
+        this.setPath(String.format("%sr", this.path));
+
+        ObjectOutputStream myos = new ObjectOutputStream(new FileOutputStream(this.path));
+        myos.writeObject(this);
+        myos.close();
+
+        ObjectOutputStream los = new ObjectOutputStream(new FileOutputStream(l.getPath()));
+        los.writeObject(l);
+        los.close();
+        return new splitResponse(n, l.getPath(), this.path, fPath);
     }
 
     @Override
@@ -79,7 +91,6 @@ public class BLeaf implements BNode {
 
     @Override
     public void printBT() {
-//        System.out.println(this);
         for (Nodo n: this.keys) {
             System.out.println(n);
         }
@@ -93,8 +104,8 @@ public class BLeaf implements BNode {
 
     /*----------------------Getters----------------------*/
 
-    public BInner getFather() {
-        return father;
+    public String getPath() {
+        return path;
     }
 
     public List<Nodo> getKeys() {
@@ -115,8 +126,8 @@ public class BLeaf implements BNode {
 
     /*----------------------Setters----------------------*/
 
-    public void setFather(BInner father) {
-        this.father = father;
+    private void setPath(String path) {
+        this.path = path;
     }
 
     private void setKeys(List<Nodo> keys) {

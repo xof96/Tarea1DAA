@@ -1,13 +1,14 @@
 package p1;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 
-public abstract class Nodo {
+public abstract class Nodo implements Serializable {
 
-    protected Hashtable<String, Integer> attr;
+    Hashtable<String, Integer> attr;
 
     public Nodo() {
-        this.attr = new Hashtable<String, Integer>();
+        this.attr = new Hashtable<>();
     }
 
     public Hashtable<String, Integer> getAttr() {

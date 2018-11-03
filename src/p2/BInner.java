@@ -2,48 +2,75 @@ package p2;
 
 import p1.Nodo;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BInner implements BNode {
+public class BInner implements BNode, Serializable {
 
-    private BInner father;
+    private String path;
+    private String fatherPath;
     private List<Nodo> keys;
     private int kLimit;
     private int currK;
-    private List<BNode> children;
+    private List<String> childrenPath;
     private int cLimit;
     private String orderCriteria;
     private int currC;
 
-    BInner(int b, String criteria) {
+    BInner(int b, String criteria, String path) {
+        this.path = path;
         this.keys = new ArrayList<>();
         this.kLimit = b / 2;
         this.currK = 0;
-        this.children = new ArrayList<>();
+        this.childrenPath = new ArrayList<>();
         this.cLimit = b / 2 + 1;
         this.currC = 0;
         this.orderCriteria = criteria;
     }
 
     @Override
-    public void insert(BTree t, Nodo n) {
+    public splitResponse insert(BTree t, Nodo n) throws IOException, ClassNotFoundException {
 
         int value = n.getAttr().get(this.orderCriteria);
+        ObjectInputStream ois = null;
+        splitResponse sr = null;
         for (int i = 0; i <= this.currK; i++) {
             if (i < this.currK) {
                 if (value <= this.keys.get(i).getAttr().get(this.orderCriteria)) {
-                    this.children.get(i).insert(t, n);
+                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                    BNode child = (BNode) ois.readObject();
+                    sr = child.insert(t, n);
+                    ObjectOutputStream cos = new ObjectOutputStream(new FileOutputStream(child.getPath()));
+                    cos.writeObject(child);
+                    cos.close();
                     break;
                 }
             } else {
-                this.children.get(i).insert(t, n);
+                ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                BNode child = (BNode) ois.readObject();
+                sr = child.insert(t, n);
+                ObjectOutputStream cos = new ObjectOutputStream(new FileOutputStream(child.getPath()));
+                cos.writeObject(child);
+                cos.close();
                 break;
             }
         }
+        if (sr != null) {
+            int index = indexToInsert(sr.getN());
+            this.insertChildPath(sr.getlPath(), index);
+            this.childrenPath.remove(index + 1);
+            this.insertChildPath(sr.getrPath(), index + 1);
+            return this.insertBcsOfSplitting(sr.getN(), index);
+
+        }
+        if (ois != null) {
+            ois.close();
+        }
+        return null;
     }
 
-    int indexToInsert(Nodo n) {
+    private int indexToInsert(Nodo n) {
         int value = n.getAttr().get(this.orderCriteria);
         if (this.currK == 0)
             return 0;
@@ -55,7 +82,7 @@ public class BInner implements BNode {
         return this.currK;
     }
 
-    void insertBcsOfSplitting(BTree t, Nodo n, int index) {
+    splitResponse insertBcsOfSplitting(Nodo n, int index) throws IOException {
         if (index < currK) {
             this.keys.add(index, n);
             this.currK++;
@@ -67,73 +94,88 @@ public class BInner implements BNode {
         if (this.currK > this.kLimit) {
             int middleN = this.currK / 2;
             List<Nodo> leftKeys = new ArrayList<>();
-            List<BNode> leftChildren = new ArrayList<>();
-            BInner lInner = new BInner(this.kLimit + this.cLimit, this.orderCriteria);
+            String lPath = String.format("%sl", this.path);
+            BInner lInner = new BInner(this.kLimit + this.cLimit, this.orderCriteria, lPath);
             Nodo med = this.keys.remove(middleN);
-            currK--;
+            this.currK--;
             for (int i = 0; i < middleN; i++) {
                 leftKeys.add(this.keys.remove(0));
                 this.currK--;
-                lInner.insertChild(this.children.remove(0), lInner.getCurrC());
-//                leftChildren.add(this.children.remove(0));
+                lInner.insertChildPath(this.childrenPath.remove(0), lInner.getCurrC());
                 this.currC--;
             }
-            lInner.insertChild(this.children.remove(0), lInner.getCurrC());
-//            leftChildren.add(this.children.remove(0));
+            lInner.insertChildPath(this.childrenPath.remove(0), lInner.getCurrC());
             this.currC--;
             lInner.setKeys(leftKeys);
             lInner.setCurrK(middleN);
-//            lInner.setChildren(leftChildren);
-//            lInner.setCurrC(middleN + 1);
-            this.split(t, med, lInner, this);
+            return this.split(med, lInner);
         }
+        return null;
     }
 
-    void insertChild(BNode c, int index) {
-        c.setFather(this);
+    @Override
+    public splitResponse split(Nodo n, BNode l) throws IOException {
+        String fPath = String.format("%sf", this.path);
+
+        File f = new File(this.path);
+        if(f.delete())
+            System.out.printf("%s borrado%n", this.path);
+
+        this.setPath(String.format("%sr", this.path));
+
+        ObjectOutputStream myos = new ObjectOutputStream(new FileOutputStream(this.path));
+        myos.writeObject(this);
+        myos.close();
+
+        ObjectOutputStream los = new ObjectOutputStream(new FileOutputStream(l.getPath()));
+        los.writeObject(l);
+        los.close();
+
+        return new splitResponse(n, l.getPath(), this.path, fPath);
+    }
+
+    void insertChildPath(String cPath, int index) {
         if (index >= this.currC) {
-            this.children.add(c);
+            this.childrenPath.add(cPath);
             this.currC++;
         } else {
-            this.children.add(index, c);
+            this.childrenPath.add(index, cPath);
             this.currC++;
         }
     }
 
     @Override
-    public void split(BTree t, Nodo n, BNode l, BNode r) {
-        if (this.father == null) {
-            this.setFather(new BInner(this.kLimit + this.cLimit, this.orderCriteria));
-            this.father.insertChild(r, 0);
-            t.setRoot(this.father);
-        }
-        int index = this.father.indexToInsert(n);
-        this.father.insertChild(l, index);
-        this.father.insertBcsOfSplitting(t, n, index);
-    }
-
-    @Override
-    public List<Nodo> search(int value) {
+    public List<Nodo> search(int value) throws IOException, ClassNotFoundException {
         List<Nodo> res = new ArrayList<>();
+        ObjectInputStream ois = null;
         for (int i = 0; i < this.currK; i++) {
             int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
             if (value == bufV) {
-                res.addAll(this.children.get(i).search(value));
+                ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                BNode child = (BNode) ois.readObject();
+                res.addAll(child.search(value));
                 res.add(this.keys.get(i));
             }
             if (value < bufV) {
-                res.addAll(this.children.get(i).search(value));
+                ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                BNode child = (BNode) ois.readObject();
+                res.addAll(child.search(value));
                 break;
             }
+        }
+
+        if (ois != null) {
+            ois.close();
         }
         return res;
     }
 
     @Override
-    public void printBT() {
-//        System.out.println(this);
+    public void printBT() throws IOException, ClassNotFoundException {
         for (int i = 0; i <= this.currK; i++) {
-            this.children.get(i).printBT();
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+            BNode child = (BNode) ois.readObject();
+            child.printBT();
             if (i < this.currK)
                 System.out.println(this.keys.get(i));
         }
@@ -148,8 +190,12 @@ public class BInner implements BNode {
 
     /*----------------------Getters----------------------*/
 
-    public BInner getFather() {
-        return this.father;
+    public String getPath() {
+        return path;
+    }
+
+    public String getFatherPath() {
+        return this.fatherPath;
     }
 
     public List<Nodo> getKeys() {
@@ -164,8 +210,8 @@ public class BInner implements BNode {
         return this.currK;
     }
 
-    public List<BNode> getChildren() {
-        return this.children;
+    public List<String> getChildrenPath() {
+        return childrenPath;
     }
 
     public int getCLimit() {
@@ -183,8 +229,12 @@ public class BInner implements BNode {
 
     /*----------------------Setters----------------------*/
 
-    public void setFather(BInner father) {
-        this.father = father;
+    private void setPath(String path) {
+        this.path = path;
+    }
+
+    public void setFatherPath(String fatherPath) {
+        this.fatherPath = fatherPath;
     }
 
     private void setKeys(List<Nodo> keys) {
@@ -199,8 +249,8 @@ public class BInner implements BNode {
         this.currK = currK;
     }
 
-    public void setChildren(List<BNode> children) {
-        this.children = children;
+    public void setChildrenPath(List<String> childrenPath) {
+        this.childrenPath = childrenPath;
     }
 
     public void setCLimit(int cLimit) {
