@@ -183,69 +183,74 @@ public class BInner implements BNode, Serializable {
     }
 
     @Override
-    public List<Nodo> searchLesser(int ini, int fin, int incI, int incF) throws IOException, ClassNotFoundException {
+    public List<Nodo> searchByRange(int ini, int fin, int incI, int incF) throws IOException, ClassNotFoundException {
 
         if (ini == -1) return this.searchLesser(fin, incF);
         if (fin == -1) return this.searchBigger(ini, incI);
 
         List<Nodo> res = new ArrayList<>();
         ObjectInputStream ois = null;
-        for (int i = 0; i < this.currK; i++) {
-            int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
-            if (incI == 1 && incF == 1) {
-                if (ini <= bufV && bufV <= fin) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(ini, fin, incI, incF));
-                    res.add(this.keys.get(i));
-                }
-                if (bufV > fin) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(ini, fin, incI, incF));
-                    break;
-                }
-            } else if (incI == 1 && incF == 0) {
-                if (ini <= bufV && bufV < fin) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(ini, fin, incI, incF));
-                    res.add(this.keys.get(i));
-                }
-                if (bufV >= fin) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(ini, fin, incI, incF));
-                    break;
-                }
-            } else if (incI == 0 && incF == 1) {
-                if (ini < bufV && bufV <= fin) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(ini, fin, incI, incF));
-                    res.add(this.keys.get(i));
-                }
-                if (bufV > fin) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(ini, fin, incI, incF));
-                    break;
+        for (int i = 0; i <= this.currK; i++) {
+            if (i < this.currK) {
+                int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
+                if (incI == 1 && incF == 1) {
+                    if (ini <= bufV && bufV <= fin) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchByRange(ini, fin, incI, incF));
+                        res.add(this.keys.get(i));
+                    }
+                    if (bufV > fin) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchByRange(ini, fin, incI, incF));
+                        break;
+                    }
+                } else if (incI == 1 && incF == 0) {
+                    if (ini <= bufV && bufV < fin) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchByRange(ini, fin, incI, incF));
+                        res.add(this.keys.get(i));
+                    }
+                    if (bufV >= fin) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchByRange(ini, fin, incI, incF));
+                        break;
+                    }
+                } else if (incI == 0 && incF == 1) {
+                    if (ini < bufV && bufV <= fin) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchByRange(ini, fin, incI, incF));
+                        res.add(this.keys.get(i));
+                    }
+                    if (bufV > fin) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchByRange(ini, fin, incI, incF));
+                        break;
+                    }
+                } else {
+                    if (ini < bufV && bufV < fin) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchByRange(ini, fin, incI, incF));
+                        res.add(this.keys.get(i));
+                    }
+                    if (bufV >= fin) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchByRange(ini, fin, incI, incF));
+                        break;
+                    }
                 }
             } else {
-                if (ini < bufV && bufV < fin) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(ini, fin, incI, incF));
-                    res.add(this.keys.get(i));
-                }
-                if (bufV >= fin) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(ini, fin, incI, incF));
-                    break;
-                }
+                ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                BNode child = (BNode) ois.readObject();
+                res.addAll(child.searchByRange(ini, fin, incI, incF));
             }
-
         }
 
         if (ois != null) ois.close();
@@ -257,26 +262,75 @@ public class BInner implements BNode, Serializable {
     public List<Nodo> searchLesser(int value, int incF) throws IOException, ClassNotFoundException {
         List<Nodo> res = new ArrayList<>();
         ObjectInputStream ois = null;
-        for (int i = 0; i < this.currK; i++) {
-            int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
-            if (incF == 1) {
-                if (bufV <= value) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(value, incF));
-                    res.add(this.keys.get(i));
+        for (int i = 0; i <= this.currK; i++) {
+            if (i < this.currK) {
+                int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
+                if (incF == 1) {
+                    if (bufV <= value) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchLesser(value, incF));
+                        res.add(this.keys.get(i));
+                    }
+                    if (bufV > value) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchLesser(value, incF));
+                        break;
+                    }
+                } else {
+                    if (bufV < value) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchLesser(value, incF));
+                        res.add(this.keys.get(i));
+                    }
+                    if (bufV >= value) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchLesser(value, incF));
+                        break;
+                    }
                 }
-                if (bufV > value) break;
             } else {
-                if (bufV < value) {
-                    ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
-                    BNode lChild = (BNode) ois.readObject();
-                    res.addAll(lChild.searchLesser(value, incF));
-                    res.add(this.keys.get(i));
-                }
-                if (bufV >= value) break;
+                ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                BNode child = (BNode) ois.readObject();
+                res.addAll(child.searchLesser(value, incF));
             }
+        }
 
+        if (ois != null) ois.close();
+
+        return res;
+    }
+
+    @Override
+    public List<Nodo> searchBigger(int value, int incI) throws IOException, ClassNotFoundException {
+        List<Nodo> res = new ArrayList<>();
+        ObjectInputStream ois = null;
+        for (int i = 0; i <= this.currK; i++) {
+            if (i < this.currK) {
+                int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
+                if (incI == 1) {
+                    if (bufV >= value) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchBigger(value, incI));
+                        res.add(this.keys.get(i));
+                    }
+                } else {
+                    if (bufV > value) {
+                        ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                        BNode child = (BNode) ois.readObject();
+                        res.addAll(child.searchBigger(value, incI));
+                        res.add(this.keys.get(i));
+                    }
+                }
+            } else {
+                ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
+                BNode child = (BNode) ois.readObject();
+                res.addAll(child.searchBigger(value, incI));
+            }
         }
 
         if (ois != null) ois.close();

@@ -27,7 +27,7 @@ public interface BNode {
     /*
      * Retorna una List<Nodo> con la los nodos que cumplen la condición.
      */
-    List<Nodo> searchLesser(int ini, int fin, int incI, int incF) throws IOException, ClassNotFoundException;
+    List<Nodo> searchByRange(int ini, int fin, int incI, int incF) throws IOException, ClassNotFoundException;
 
     /*
      * Prints the node and its children.
@@ -40,5 +40,5 @@ public interface BNode {
     String getPath();
 
     List<Nodo> searchLesser(int value, int incF) throws IOException, ClassNotFoundException;
-    List<Nodo> searchBigger(int value, int incF);
+    List<Nodo> searchBigger(int value, int incI) throws IOException, ClassNotFoundException;
 }

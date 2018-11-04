@@ -96,8 +96,58 @@ public class BLeaf implements BNode, Serializable {
     }
 
     @Override
-    public List<Nodo> searchLesser(int ini, int fin, int incI, int incF) throws IOException, ClassNotFoundException {
-        return null;
+    public List<Nodo> searchByRange(int ini, int fin, int incI, int incF) {
+        if (ini == -1) return this.searchLesser(fin, incF);
+        if (fin == -1) return this.searchBigger(ini, incI);
+
+        List<Nodo> res = new ArrayList<>();
+        for (int i = 0; i < this.currK; i++) {
+            int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
+            if (incI == 1 && incF == 1) {
+                if (ini <= bufV && bufV <= fin) res.add(this.keys.get(i));
+                if (bufV > fin) break;
+            } else if (incI == 1 && incF == 0) {
+                if (ini <= bufV && bufV < fin) res.add(this.keys.get(i));
+                if (bufV >= fin) break;
+            } else if (incI == 0 && incF == 1) {
+                if (ini < bufV && bufV <= fin) res.add(this.keys.get(i));
+                if (bufV > fin) break;
+            } else {
+                if (ini < bufV && bufV < fin) res.add(this.keys.get(i));
+                if (bufV >= fin) break;
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public List<Nodo> searchLesser(int value, int incF) {
+        List<Nodo> res = new ArrayList<>();
+        for (int i = 0; i < this.currK; i++) {
+            int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
+            if (incF == 1) {
+                if (bufV <= value) res.add(this.keys.get(i));
+                if (bufV > value) break;
+            } else {
+                if (bufV < value) res.add(this.keys.get(i));
+                if (bufV >= value) break;
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public List<Nodo> searchBigger(int value, int incI) {
+        List<Nodo> res = new ArrayList<>();
+        for (int i = 0; i < this.currK; i++) {
+            int bufV = this.keys.get(i).getAttr().get(this.orderCriteria);
+            if (incI == 1) {
+                if (bufV >= value) res.add(this.keys.get(i));
+            } else {
+                if (bufV > value) res.add(this.keys.get(i));
+            }
+        }
+        return res;
     }
 
     @Override
