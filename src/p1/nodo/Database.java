@@ -12,10 +12,12 @@ import java.util.List;
 
 public class Database {
     private Path file;
+    private String name;
     private static int MEMOSIZE = 100000;
     private static int MAX_INT = 2147483647;
 
     public Database(String path) {
+        this.name = path.substring(path.lastIndexOf("/")+1,path.lastIndexOf("."));
         this.file = Paths.get(path);
     }
 
@@ -27,7 +29,7 @@ public class Database {
         }
     }
 
-    void ordenar(String attr) {
+    public void ordenar(String attr) {
         Nodo[] l = new Nodo[MEMOSIZE];
         Charset charset = Charset.forName("US-ASCII");
         Path[] temps = new Path[1000];
@@ -116,8 +118,11 @@ public class Database {
                     Producto p = new Producto(id, precio, ptsNec, ptsRec);
                     nodosmin[index] = p;
                 }
-                Files.write(Paths.get("./final.txt"), (min.toString() + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                Files.write(Paths.get("./"+this.name+"orderedby"+attr+".txt"), (min.toString() + String.format("%n")).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
                 min = max;
+            }
+            for (int a = 0; a < tempsn; a++){
+                Files.delete(temps[a]);
             }
         } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
