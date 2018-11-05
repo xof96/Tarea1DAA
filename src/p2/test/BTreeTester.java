@@ -19,13 +19,17 @@ public class BTreeTester {
         Random r = new Random();
 
         for (int i = 1; i <= nExp; i++) {
-            System.out.println(i);
+            System.out.println(String.format("\nExperimento n°%d", i));
             int inputs = (int) Math.pow(10, pow);
             int B = 1000;
             BTree bt = new BTree(B, criteria, String.format("%s%d", btPath, i));
             long startTime = System.currentTimeMillis();
-            for (int j = 1; j <= inputs; j++)
+            for (int j = 1; j <= inputs; j++){
+                long st = System.currentTimeMillis();
                 bt.insert(new Producto(j, r.nextInt(9991) + 10, r.nextInt(9001) + 1000, r.nextInt(991) + 10));
+                long ft = System.currentTimeMillis() - st;
+                System.out.println(String.format("Tiempo de la inserción %d: %dms", j, ft));
+            }
             long stopTime = System.currentTimeMillis();
             long elapsedTime = stopTime - startTime;
             String nameTest = String.format("time%d: ", i);

@@ -18,7 +18,7 @@ public class FileTester {
         Random r = new Random();
 
         for (int i = 1; i <= nExp; i++) {
-            System.out.println(i);
+            System.out.println(String.format("\nExperimento n°%d", i));
             int inputs = (int) Math.pow(10, pow);
             String tmp = String.format("./producto-%d.txt", i);
             Database dataInUse = new Database(tmp);
