@@ -34,6 +34,7 @@ public class BTree {
         SplitResponse sr = root.insert(this, n); // Se inserta
 
         if (sr != null) { // Si el nodo raíz necesita hacer split.
+            System.out.println("La raíz hace split");
             this.setRootPath(sr.getfPath());
             BInner bi = new BInner(this.b, this.criteria, this.rootPath);
             bi.insertChildPath(sr.getrPath(), 0);
