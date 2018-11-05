@@ -16,8 +16,9 @@
 * ###create:
     * Contiene los ejecutables para insertar nodos en archivos.
 * ###test:
-    * __FileTester__: Clase en cargada de crear archivo e insertar nodos según ciertos parámetros.
-    * __MergeTester__: SPIKE...
+    * __FileTester__: Clase encargada de crear archivo e insertar nodos según ciertos parámetros.
+    * __MergeTester__: Esta clase se encarga de medir el tiempo de ejecución del método ordenar sobre objetos tipo Database
+     con archivos de distinto tamaño. 
 
 
 ###p2:
