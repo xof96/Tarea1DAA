@@ -35,28 +35,31 @@ public class BInner implements BNode, Serializable {
         int value = n.getAttr().get(this.orderCriteria);
         ObjectInputStream ois = null;
         SplitResponse sr = null;
+
         for (int i = 0; i <= this.currK; i++) {
             if (i < this.currK) {
                 if (value <= this.keys.get(i).getAttr().get(this.orderCriteria)) {
                     ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
                     BNode child = (BNode) ois.readObject();
-                    sr = child.insert(t, n);
+                    sr = child.insert(t, n); // Se hace insert en el hijo, se espera respuesta.
                     ObjectOutputStream cos = new ObjectOutputStream(new FileOutputStream(child.getPath()));
                     cos.writeObject(child);
                     cos.close();
                     break;
                 }
-            } else {
+            } else { // Si se llega al final de los punteros a nodo, se pasa la llamada al último hijo.
                 ois = new ObjectInputStream(new FileInputStream(this.childrenPath.get(i)));
                 BNode child = (BNode) ois.readObject();
                 sr = child.insert(t, n);
+                // Se guarda el hijo en disco.
                 ObjectOutputStream cos = new ObjectOutputStream(new FileOutputStream(child.getPath()));
                 cos.writeObject(child);
                 cos.close();
                 break;
             }
         }
-        if (sr != null) {
+
+        if (sr != null) { // Si hay que hacer split.
             int index = indexToInsert(sr.getN());
             this.insertChildPath(sr.getlPath(), index);
             this.childrenPath.remove(index + 1);
@@ -70,6 +73,9 @@ public class BInner implements BNode, Serializable {
         return null;
     }
 
+    /*
+     * Retorna el índice en donde se debería insertar n.
+     */
     private int indexToInsert(Nodo n) {
         int value = n.getAttr().get(this.orderCriteria);
         if (this.currK == 0)
@@ -82,6 +88,9 @@ public class BInner implements BNode, Serializable {
         return this.currK;
     }
 
+    /*
+     * Inserta el Nodo n en el índice index, sin hacer llamados recursivos hacia los hijos.
+     */
     SplitResponse insertBcsOfSplitting(Nodo n, int index) throws IOException {
         if (index < currK) {
             this.keys.add(index, n);
@@ -91,7 +100,7 @@ public class BInner implements BNode, Serializable {
             this.currK++;
         }
 
-        if (this.currK > this.kLimit) {
+        if (this.currK > this.kLimit) { // Puede haber overflow.
             int middleN = this.currK / 2;
             List<Nodo> leftKeys = new ArrayList<>();
             String lPath = String.format("%sl", this.path);
@@ -139,6 +148,9 @@ public class BInner implements BNode, Serializable {
         return new SplitResponse(n, l.getPath(), this.path, fPath);
     }
 
+    /*
+     * Inserta un path en el arreglo children, en la posición index.
+     */
     void insertChildPath(String cPath, int index) {
         if (index >= this.currC) {
             this.childrenPath.add(cPath);

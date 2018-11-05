@@ -3,10 +3,10 @@ package p2.btree;
 import p1.nodo.Nodo;
 
 public class SplitResponse {
-    private Nodo n;
-    private String lPath;
-    private String rPath;
-    private String fPath;
+    private Nodo n; // Nodo a insertar en el padre
+    private String lPath; // Path del hijo izquierdo.
+    private String rPath; // Path del hijo derecho.
+    private String fPath; // Path del padre.
 
     SplitResponse(Nodo n, String lPath, String rPath, String fPath) {
         this.n = n;
