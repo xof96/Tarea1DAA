@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BLeaf implements BNode, Serializable {
-    private String path;
-    private List<Nodo> keys;
-    private int kLimit;
-    private String orderCriteria;
-    private int currK;
+    private String path; // Ruta del archivo donde se guardará este nodo.
+    private List<Nodo> keys; // Punteros a los nodos.
+    private int kLimit; // Límite de nodos que puede tener la hoja, sirve para saber cuándo hay que hacer split.
+    private String orderCriteria; // Criterio por el cuál se inserta un nodo.
+    private int currK; // Número actual de punteros a nodos.
 
     BLeaf(int b, String criteria, String path) {
         this.path = path;
@@ -22,7 +22,7 @@ public class BLeaf implements BNode, Serializable {
     }
 
     @Override
-    public SplitResponse insert(BTree t, Nodo n) throws IOException {
+    public SplitResponse insert(BTree t, Nodo n) throws IOException { // Está en RAM
         int value = n.getAttr().get(this.orderCriteria);
         for (int i = 0; i <= this.currK; i++) {
             if (i < this.currK) {
@@ -38,12 +38,12 @@ public class BLeaf implements BNode, Serializable {
             }
         }
 
-        if (this.currK > this.kLimit) {
+        if (this.currK > this.kLimit) { // En caso de split.
             int middleN = this.currK / 2;
             List<Nodo> leftKeys = new ArrayList<>();
-            String lPath = String.format("%sl", this.path);
+            String lPath = String.format("%sl", this.path); // Path de la hoja de la izquierda.
             BLeaf lLeaf = new BLeaf(this.kLimit, this.orderCriteria, lPath);
-            Nodo med = this.keys.remove(middleN);
+            Nodo med = this.keys.remove(middleN); // Nodo que va a subir.
             this.currK--;
             for (int i = 0; i < middleN; i++) {
                 leftKeys.add(this.keys.remove(0));
@@ -54,6 +54,7 @@ public class BLeaf implements BNode, Serializable {
             return this.split(med, lLeaf);
         }
 
+        // Se guarda en disco.
         ObjectOutputStream myos = new ObjectOutputStream(new FileOutputStream(this.path));
         myos.writeObject(this);
         myos.close();
@@ -63,21 +64,25 @@ public class BLeaf implements BNode, Serializable {
 
     @Override
     public SplitResponse split(Nodo n, BNode l) throws IOException {
-        String fPath = String.format("%sf", this.path);
+        String fPath = String.format("%sf", this.path); // Path del padre.
 
         File f = new File(this.path);
         if(f.delete())
-            System.out.printf("%s borrado%n", this.path);
+            System.out.printf("%s borrado%n", this.path); // Se borra el archivo actual.
 
-        this.setPath(String.format("%sr", this.path));
+        this.setPath(String.format("%sr", this.path)); // Path nuevo, corresponde a que el BLeaf "this"
+                                                       // queda como hoja de la derecha.
 
+        // Se guarda this en el nuevo path, en disco.
         ObjectOutputStream myos = new ObjectOutputStream(new FileOutputStream(this.path));
         myos.writeObject(this);
         myos.close();
 
+        // Se guarda la hoja izquierda en disco.
         ObjectOutputStream los = new ObjectOutputStream(new FileOutputStream(l.getPath()));
         los.writeObject(l);
         los.close();
+
         return new SplitResponse(n, l.getPath(), this.path, fPath);
     }
 

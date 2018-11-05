@@ -35,10 +35,17 @@ public interface BNode {
     void printBT() throws IOException, ClassNotFoundException;
 
     /*
-     * Returns the path of the node.
+     * Retorna el path del BNode
      */
     String getPath();
 
+    /*
+     * Retorna los elementos menores que value o menores o iguales si incF es 1.
+     */
     List<Nodo> searchLesser(int value, int incF) throws IOException, ClassNotFoundException;
+
+    /*
+     * Retorna los elementos mayores que value o mayores o iguales si incI es 1.
+     */
     List<Nodo> searchBigger(int value, int incI) throws IOException, ClassNotFoundException;
 }
