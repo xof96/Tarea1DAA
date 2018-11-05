@@ -18,7 +18,7 @@
 * ###test:
     * __FileTester__: Clase encargada de crear archivo e insertar nodos según ciertos parámetros.
     * __MergeTester__: Esta clase se encarga de medir el tiempo de ejecución del método ordenar sobre objetos tipo Database
-     con archivos de distinto tamaño. 
+     con archivos de distinto tamaño. Para esto basta con ejecutarla y se generaran los archivos con los tiempos
 
 
 ###p2:
