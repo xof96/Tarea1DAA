@@ -50,18 +50,18 @@ public class QueryMaker {
 
         String timePath = "src/p3/res/times";
 
-        doQuery1(c1, p1, "src/p3/res/c1p1.txt", timePath, "c1p1-Q1: ");
-        doQuery1(c1, p2, "src/p3/res/c1p2.txt", timePath, "c1p2-Q1: ");
-        doQuery1(c1, p3, "src/p3/res/c1p3.txt", timePath, "c1p3-Q1: ");
-        doQuery1(c1, p4, "src/p3/res/c1p4.txt", timePath, "c1p4-Q1: ");
-        doQuery1(c2, p1, "src/p3/res/c2p1.txt", timePath, "c2p1-Q1: ");
-        doQuery1(c2, p2, "src/p3/res/c2p2.txt", timePath, "c2p2-Q1: ");
-        doQuery1(c2, p3, "src/p3/res/c2p3.txt", timePath, "c2p3-Q1: ");
-        doQuery1(c2, p4, "src/p3/res/c2p4.txt", timePath, "c2p4-Q1: ");
-        doQuery1(c3, p1, "src/p3/res/c3p1.txt", timePath, "c3p1-Q1: ");
-        doQuery1(c3, p2, "src/p3/res/c3p2.txt", timePath, "c3p2-Q1: ");
-        doQuery1(c3, p3, "src/p3/res/c3p3.txt", timePath, "c3p3-Q1: ");
-        doQuery1(c3, p4, "src/p3/res/c3p4.txt", timePath, "c3p4-Q1: ");
+        doQuery1(c1, p1, "src/p3/res/1c1p1.txt", timePath, "c1p1-Q1: ");
+        doQuery1(c1, p2, "src/p3/res/1c1p2.txt", timePath, "c1p2-Q1: ");
+        doQuery1(c1, p3, "src/p3/res/1c1p3.txt", timePath, "c1p3-Q1: ");
+        doQuery1(c1, p4, "src/p3/res/1c1p4.txt", timePath, "c1p4-Q1: ");
+        doQuery1(c2, p1, "src/p3/res/1c2p1.txt", timePath, "c2p1-Q1: ");
+        doQuery1(c2, p2, "src/p3/res/1c2p2.txt", timePath, "c2p2-Q1: ");
+        doQuery1(c2, p3, "src/p3/res/1c2p3.txt", timePath, "c2p3-Q1: ");
+        doQuery1(c2, p4, "src/p3/res/1c2p4.txt", timePath, "c2p4-Q1: ");
+        doQuery1(c3, p1, "src/p3/res/1c3p1.txt", timePath, "c3p1-Q1: ");
+        doQuery1(c3, p2, "src/p3/res/1c3p2.txt", timePath, "c3p2-Q1: ");
+        doQuery1(c3, p3, "src/p3/res/1c3p3.txt", timePath, "c3p3-Q1: ");
+        doQuery1(c3, p4, "src/p3/res/1c3p4.txt", timePath, "c3p4-Q1: ");
 
 
         /*
@@ -69,18 +69,18 @@ public class QueryMaker {
          * el producto, y listar al producto con cada uno de esos clientes
          */
 
-        doQuery2(c1, p1, "src/p3/res/c1p1.txt", timePath, "c1p1-Q2: ");
-        doQuery2(c1, p2, "src/p3/res/c1p2.txt", timePath, "c1p2-Q2: ");
-        doQuery2(c1, p3, "src/p3/res/c1p3.txt", timePath, "c1p3-Q2: ");
-        doQuery2(c1, p4, "src/p3/res/c1p4.txt", timePath, "c1p4-Q2: ");
-        doQuery2(c2, p1, "src/p3/res/c2p1.txt", timePath, "c2p1-Q2: ");
-        doQuery2(c2, p2, "src/p3/res/c2p2.txt", timePath, "c2p2-Q2: ");
-        doQuery2(c2, p3, "src/p3/res/c2p3.txt", timePath, "c2p3-Q2: ");
-        doQuery2(c2, p4, "src/p3/res/c2p4.txt", timePath, "c2p4-Q2: ");
-        doQuery2(c3, p1, "src/p3/res/c3p1.txt", timePath, "c3p1-Q2: ");
-        doQuery2(c3, p2, "src/p3/res/c3p2.txt", timePath, "c3p2-Q2: ");
-        doQuery2(c3, p3, "src/p3/res/c3p3.txt", timePath, "c3p3-Q2: ");
-        doQuery2(c3, p4, "src/p3/res/c3p4.txt", timePath, "c3p4-Q2: ");
+        doQuery2(c1, p1, "src/p3/res/2c1p1.txt", timePath, "c1p1-Q2: ");
+        doQuery2(c1, p2, "src/p3/res/2c1p2.txt", timePath, "c1p2-Q2: ");
+        doQuery2(c1, p3, "src/p3/res/2c1p3.txt", timePath, "c1p3-Q2: ");
+        doQuery2(c1, p4, "src/p3/res/2c1p4.txt", timePath, "c1p4-Q2: ");
+        doQuery2(c2, p1, "src/p3/res/2c2p1.txt", timePath, "c2p1-Q2: ");
+        doQuery2(c2, p2, "src/p3/res/2c2p2.txt", timePath, "c2p2-Q2: ");
+        doQuery2(c2, p3, "src/p3/res/2c2p3.txt", timePath, "c2p3-Q2: ");
+        doQuery2(c2, p4, "src/p3/res/2c2p4.txt", timePath, "c2p4-Q2: ");
+        doQuery2(c3, p1, "src/p3/res/2c3p1.txt", timePath, "c3p1-Q2: ");
+        doQuery2(c3, p2, "src/p3/res/2c3p2.txt", timePath, "c3p2-Q2: ");
+        doQuery2(c3, p3, "src/p3/res/2c3p3.txt", timePath, "c3p3-Q2: ");
+        doQuery2(c3, p4, "src/p3/res/2c3p4.txt", timePath, "c3p4-Q2: ");
 
     }
 
@@ -168,7 +168,7 @@ public class QueryMaker {
         Hashtable<Nodo, List<Nodo>> res = new Hashtable<>();
         List<Nodo> productos = p1.searchBigger(0, 1);
         for (Nodo p : productos) {
-            int ptsNec = p.getAttr().get("ptsAc");
+            int ptsNec = p.getAttr().get("ptsNec");
             List<Nodo> conList1 = c1.searchBigger(ptsNec, 1);
             res.put(p, conList1);
         }
